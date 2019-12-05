@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  * @return string Empty string.
  */
 function filter_filtercodes_render_navbar_output() {
+
     // Note: This function is only supported as of Moodle 3.2+ in themes based on Bootstrapbase and Boost.
     // If enabled in plugin settings.
     if (get_config('filter_filtercodes', 'enable_customnav')) {
@@ -44,8 +45,9 @@ function filter_filtercodes_render_navbar_output() {
             $skipfilters = array('activitynames', 'data', 'glossary', 'sectionnames', 'bookchapters');
 
             // Filter Custom Menu.
-            $CFG->custommenuitems = $filtermanager->filter_text($CFG->custommenuitems,
+            $CFG->custommenuitems = PHP_EOL . $filtermanager->filter_text($CFG->custommenuitems,
                     $PAGE->context, $filteroptions, $skipfilters);
+
         }
     }
     return '';

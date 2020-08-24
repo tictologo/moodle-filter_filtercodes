@@ -187,3 +187,7 @@ $string['formcheckin'] = '
         <input type="submit" name="submit" id="submit" value="I\'m here!">
     </div>
 </form>';
+$string['info_ucla_1'] = 'Contenido personalizado 1';
+$string['info_ucla_2'] = 'Contenido personalizado 2';
+$string['info_ucla_3'] = 'Contenido personalizado 3';
+$string['info_ucla_description'] = 'Contenidos HTML personalizados para el campus virtual. Se reemplaza [firstname] por el nombre del usuario';

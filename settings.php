@@ -59,5 +59,31 @@ if ($hassiteconfig) {
         $description = get_string('enable_scrape_description', 'filter_filtercodes');
         $setting = new admin_setting_configcheckbox($name, $title, $description, $default);
         $settings->add($setting);
+
+        // @tictologo start 202008231
+        // Custom content info_ucla_1.
+        $default = '';
+        $name = 'filter_filtercodes/info_ucla_1';
+        $title = get_string('info_ucla_1', 'filter_filtercodes');
+        $description = get_string('info_ucla_description', 'filter_filtercodes');
+        $setting = new admin_setting_configtextarea($name, $title, $description, $default);
+        $settings->add($setting);
+
+        // Custom content info_ucla_2.
+        $default = '';
+        $name = 'filter_filtercodes/info_ucla_2';
+        $title = get_string('info_ucla_2', 'filter_filtercodes');
+        $description = get_string('info_ucla_description', 'filter_filtercodes');
+        $setting = new admin_setting_configtextarea($name, $title, $description, $default);
+        $settings->add($setting);
+
+        // Custom content info_ucla_3.
+        $default = '';
+        $name = 'filter_filtercodes/info_ucla_3';
+        $title = get_string('info_ucla_3', 'filter_filtercodes');
+        $description = get_string('info_ucla_description', 'filter_filtercodes');
+        $setting = new admin_setting_configtextarea($name, $title, $description, $default);
+        $settings->add($setting);
+        // @tictologo ending 202008231
     }
 }

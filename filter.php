@@ -496,6 +496,21 @@ class filter_filtercodes extends moodle_text_filter {
             $replace['/\{idnumber\}/i'] = isloggedin() && !isguestuser() ? $USER->idnumber : '';
         }
 
+        //@tictologo start with custom filters from Campus virtual
+        // custom_tag: {info_ucla_1}.
+        if (stripos($text, '{info_ucla_1}') !== false) {
+            $replace['/\{info_ucla_1\}/i'] = str_replace('[firstname]',$USER->firstname, get_config('filter_filtercodes', 'info_ucla_1'));
+        }
+        // custom_tag: {info_ucla_2}.
+        if (stripos($text, '{info_ucla_2}') !== false) {
+            $replace['/\{info_ucla_2\}/i'] = str_replace('[firstname]',$USER->firstname, get_config('filter_filtercodes', 'info_ucla_2'));
+        }
+        // custom_tag: {info_ucla_3}.
+        if (stripos($text, '{info_ucla_3}') !== false) {
+            $replace['/\{info_ucla_3\}/i'] = str_replace('[firstname]',$USER->firstname, get_config('filter_filtercodes', 'info_ucla_3'));
+        }
+        //@tictologo finish with custom filters from Campus virtual
+
         if (get_config('filter_filtercodes', 'enable_scrape')) { // Must be enabled in FilterCodes settings.
             // Tag: {scrape url="" tag="" class="" id="" code=""}.
             if (stripos($text, '{scrape ') !== false) {

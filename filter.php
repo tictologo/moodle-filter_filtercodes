@@ -435,6 +435,22 @@ class filter_filtercodes extends moodle_text_filter {
             $lastname = get_string('defaultsurname', 'filter_filtercodes');
         }
 
+        //Tag: {biblog}  @tictologo 20210417
+        if (stripos($text, '{biblog}') !== false) {
+            global $COURSE;
+            //obtengo path de la página
+            $url = (is_object($PAGE->url) ? $PAGE->url->out_as_local_url() : '');
+            if (strpos($url, '?') === false && strpos($url, '#') === false) {
+                $url .= '?';
+            }
+            //genero clave para la petición
+            $key = md5(sesskey() . 'digital library ok luis amigo 14252');
+            $limit = (time() + 60) * 4;
+            // parametros de peticion GET
+            $param = 'P0=' . base64_encode($limit) . '&P1=' . sesskey() . '&P2=' . $USER->email .  '&P3=' . urlencode($url) . '&P4=' . $COURSE->shortname . '&P5=' . $key;
+            $replace['/\{biblog\}/i'] = ' <iframe src="https://teidos.com/biblioteca/?query=' .  base64_encode($param) . '" class="biblio_embed"></iframe> ';
+        }
+
         // Tag: {firstname}.
         if (stripos($text, '{firstname}') !== false) {
             $replace['/\{firstname\}/i'] = $firstname;

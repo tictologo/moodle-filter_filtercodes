@@ -296,6 +296,30 @@ class filter_filtercodes extends moodle_text_filter {
         return $dom->saveXML($tag) . urldecode($code);
     }
 
+        /**
+     * @param string $text   content keyword [proxybooklick].
+     * Get URL for login in Booklick.  @tictologo 20210420
+     * @return string Replace text [urlbooklick] with URL of proxy booklick
+     */
+    private function getBooklick($text)
+    {
+        global $COURSE, $PAGE, $USER;
+        // get path
+        $url = (is_object($PAGE->url) ? $PAGE->url->out_as_local_url() : '');
+        if (strpos($url, '?') === false && strpos($url, '#') === false) {
+            $url .= '?';
+        }
+        //key request
+        $key = md5(sesskey() . 'luis amigo 14252');
+        $limit = time() * 4;
+        // params $_GET
+        $param = 'P0=' . base64_encode($limit) . '&P1=' . sesskey() . '&P2=' . $USER->email .  '&P3=' . urlencode($url) . '&P4=' . $COURSE->shortname . '&P5=' . $key;
+
+        $urlbooklick = 'https://teidos.com/biblioteca/?query=' . base64_encode($param);
+
+        return str_replace('[proxybooklick]',$urlbooklick, $text);
+    }
+
     /**
      * Main filter function called by Moodle.
      *
@@ -435,22 +459,6 @@ class filter_filtercodes extends moodle_text_filter {
             $lastname = get_string('defaultsurname', 'filter_filtercodes');
         }
 
-        //Tag: {biblog}  @tictologo 20210417
-        if (stripos($text, '{biblog}') !== false) {
-            global $COURSE;
-            //obtengo path de la página
-            $url = (is_object($PAGE->url) ? $PAGE->url->out_as_local_url() : '');
-            if (strpos($url, '?') === false && strpos($url, '#') === false) {
-                $url .= '?';
-            }
-            //genero clave para la petición
-            $key = md5(sesskey() . 'digital library ok luis amigo 14252');
-            $limit = (time() + 60) * 4;
-            // parametros de peticion GET
-            $param = 'P0=' . base64_encode($limit) . '&P1=' . sesskey() . '&P2=' . $USER->email .  '&P3=' . urlencode($url) . '&P4=' . $COURSE->shortname . '&P5=' . $key;
-            $replace['/\{biblog\}/i'] = ' <iframe src="https://teidos.com/biblioteca/?query=' .  base64_encode($param) . '" class="biblio_embed"></iframe> ';
-        }
-
         // Tag: {firstname}.
         if (stripos($text, '{firstname}') !== false) {
             $replace['/\{firstname\}/i'] = $firstname;
@@ -515,17 +523,36 @@ class filter_filtercodes extends moodle_text_filter {
         //@tictologo start with custom filters from Campus virtual
         // custom_tag: {info_ucla_1}.
         if (stripos($text, '{info_ucla_1}') !== false) {
-            $replace['/\{info_ucla_1\}/i'] = str_replace('[firstname]',$USER->firstname, get_config('filter_filtercodes', 'info_ucla_1'));
+            $content = get_config('filter_filtercodes', 'info_ucla_1');
+                if(stripos($content, '[proxybooklick]') !== false){
+                    $content = $this-> getBooklick($content) ;
+                }
+            $replace['/\{info_ucla_1\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
         }
+
         // custom_tag: {info_ucla_2}.
         if (stripos($text, '{info_ucla_2}') !== false) {
-            $replace['/\{info_ucla_2\}/i'] = str_replace('[firstname]',$USER->firstname, get_config('filter_filtercodes', 'info_ucla_2'));
+            $content = get_config('filter_filtercodes', 'info_ucla_2');
+                if(stripos($content, '[proxybooklick]') !== false){
+                    $content = $this-> getBooklick($content) ;
+                }
+            $replace['/\{info_ucla_2\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
         }
+
         // custom_tag: {info_ucla_3}.
         if (stripos($text, '{info_ucla_3}') !== false) {
-            $replace['/\{info_ucla_3\}/i'] = str_replace('[firstname]',$USER->firstname, get_config('filter_filtercodes', 'info_ucla_3'));
+            $content = get_config('filter_filtercodes', 'info_ucla_3');
+                if(stripos($content, '[proxybooklick]') !== false){
+                    $content = $this-> getBooklick($content) ;
+                }
+            $replace['/\{info_ucla_3\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
         }
-        //@tictologo finish with custom filters from Campus virtual
+
+        // custom_tag: {biblioteca}.
+        if (stripos($text, '{biblioteca}') !== false) {
+            $replace['/\{biblioteca\}/i'] = '<span class="url_booklick"><a href="' . $this-> getBooklick('[proxybooklick]') . '" target="_blank"><i class="fa fa-book fa-ls"></i> ' . get_string('url_booklick', 'filter_filtercodes') . '</a></span>';
+        }
+        //@tictologo - End with custom filters from Campus virtual
 
         if (get_config('filter_filtercodes', 'enable_scrape')) { // Must be enabled in FilterCodes settings.
             // Tag: {scrape url="" tag="" class="" id="" code=""}.

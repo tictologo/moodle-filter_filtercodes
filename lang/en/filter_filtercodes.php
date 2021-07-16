@@ -220,3 +220,15 @@ $string['formcheckin'] = '
         <input type="submit" name="submit" id="submit" value="I\'m here!">
     </div>
 </form>';
+$string['info_ucla_1'] = 'Anuncio portada - centro';
+$string['info_ucla_2'] = 'Anuncio portada - bloque superior ';
+$string['info_ucla_3'] = 'Navegación lateral portada';
+$string['toolbox_docente'] = 'Toolbox para docentes';
+$string['toolbox_estudiante'] = 'Toolbox para estudiantes';
+$string['ayuda_docente'] = 'Ayuda para docentes';
+$string['ayuda_estudiante'] = 'Ayuda para estudiantes';
+$string['anuncio_curso_docente'] = 'Anuncio en cursos - docente';
+$string['anuncio_curso_estudiante'] = 'Anuncio en cursos - estudiantes';
+$string['url_booklick'] = 'Bases de datos académicas';
+$string['info_ucla_description'] = 'Contenidos HTML personalizados para el campus virtual. Se reemplaza [firstname] por el nombre del usuario y [proxybooklick] por URL de consulta a las bases de datos académicas';
+$string['info_ucla_description2'] = 'Contenidos HTML personalizados para el campus virtual. Se reemplaza [firstname] por el nombre del usuario';

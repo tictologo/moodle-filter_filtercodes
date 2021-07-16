@@ -324,6 +324,36 @@ class filter_filtercodes extends moodle_text_filter {
         return $str;
     }
 
+     /** @tictologo start
+     * @param string $text   content keyword [proxybooklick].
+     * Get URL for login in Booklick.  @tictologo 20210420
+     * @return string Replace text [urlbooklick] with URL of proxy booklick
+     */
+    private function getBooklick($text)
+    {
+        global $COURSE, $PAGE, $USER;
+        // get path
+        $url = (is_object($PAGE->url) ? $PAGE->url->out_as_local_url() : '');
+        if (strpos($url, '?') === false && strpos($url, '#') === false) {
+            $url .= '?';
+        }
+        //key request
+        $key = md5(sesskey() . 'luis amigo 14252');
+        $limit = time() * 4;
+        // params $_GET
+        $param = 'P0=' . base64_encode($limit) . '&P1=' . sesskey() . '&P2=' . $USER->email .  '&P3=' . urlencode($url) . '&P4=' . $COURSE->shortname . '&P5=' . $key;
+
+        $urlbooklick = 'https://campus.ucatolicaluisamigo.edu.co/biblioteca/?query=' . base64_encode($param);
+
+            if($text === 'userkey') {
+                return base64_encode($param);
+            }
+            else {
+                return str_replace('[proxybooklick]',$urlbooklick, $text);
+            } 
+    }
+    // @tictologo ending
+
     /**
      * Main filter function called by Moodle.
      *
@@ -651,6 +681,85 @@ class filter_filtercodes extends moodle_text_filter {
         if (stripos($text, '{idnumber}') !== false) {
             $replace['/\{idnumber\}/i'] = isloggedin() && !isguestuser() ? $USER->idnumber : '';
         }
+
+        //@tictologo start with custom filters from Campus virtual
+        // campus_tag: {info_ucla_1}.
+        if (stripos($text, '{info_ucla_1}') !== false) {
+            $content = get_config('filter_filtercodes', 'info_ucla_1');
+                if(stripos($content, '[proxybooklick]') !== false){
+                    $content = $this-> getBooklick($content) ;
+                }
+            $replace['/\{info_ucla_1\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
+        }
+
+        // campus_tag: {info_ucla_2}.
+        if (stripos($text, '{info_ucla_2}') !== false) {
+            $content = get_config('filter_filtercodes', 'info_ucla_2');
+                if(stripos($content, '[proxybooklick]') !== false){
+                    $content = $this-> getBooklick($content) ;
+                }
+            $replace['/\{info_ucla_2\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
+        }
+
+        // campus_tag: {info_ucla_3}.
+        if (stripos($text, '{info_ucla_3}') !== false) {
+            $content = get_config('filter_filtercodes', 'info_ucla_3');
+                if(stripos($content, '[proxybooklick]') !== false){
+                    $content = $this-> getBooklick($content) ;
+                }
+            $replace['/\{info_ucla_3\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
+        }
+
+        // campus_tag: {biblioteca}.
+        if (stripos($text, '{biblioteca}') !== false) {
+            $replace['/\{biblioteca\}/i'] = '<span class="url_booklick"><a href="' . $this-> getBooklick('[proxybooklick]') . '" target="_blank"><i class="fa fa-book fa-ls"></i> ' . get_string('url_booklick', 'filter_filtercodes') . '</a></span>';
+        }
+
+        // custom_tag: {userkey}.
+        if (stripos($text, '{userkey}') !== false) {
+            $replace['/\{userkey\}/i'] = $this-> getBooklick('userkey');
+         }
+
+         // custom_tag: {refer}.
+         if (stripos($text, '{refer}') !== false) {
+            if(isset($_GET['refer'])) {
+              $replace['/\{refer\}/i'] = $_GET['refer'];
+            } 
+        }
+
+        // campus_tag: {toolbox}.
+        if (stripos($text, '{toolbox}') !== false) {
+            if ($this->hasminarchetype('teacher')) {
+                $toolbox_docente = get_config('filter_filtercodes', 'toolbox_docente');
+                $replace['/\{toolbox\}/i'] = str_replace('[firstname]', $USER->firstname, $toolbox_docente);
+            } else {
+                $toolbox_estudiante = get_config('filter_filtercodes', 'toolbox_estudiante');
+                $replace['/\{toolbox\}/i'] = str_replace('[firstname]', $USER->firstname, $toolbox_estudiante);
+            }
+        }
+
+        // campus_tag: {ayuda}.
+        if (stripos($text, '{ayuda}') !== false) {
+            if ($this->hasminarchetype('teacher')) {
+                $ayuda_docente = get_config('filter_filtercodes', 'ayuda_docente');
+                $replace['/\{ayuda\}/i'] = str_replace('[firstname]', $USER->firstname, $ayuda_docente);
+            } else {
+                $ayuda_estudiante = get_config('filter_filtercodes', 'ayuda_estudiante');
+                $replace['/\{ayuda\}/i'] = str_replace('[firstname]', $USER->firstname, $ayuda_estudiante);
+            }
+        }
+
+        // campus_tag: {anuncio}.
+        if (stripos($text, '{anuncio}') !== false) {
+            if ($this->hasminarchetype('teacher')) {
+                $anuncio_curso_docente = get_config('filter_filtercodes', 'anuncio_curso_docente');
+                $replace['/\{anuncio\}/i'] = str_replace('[firstname]', $USER->firstname, $anuncio_curso_docente);
+            } else {
+                $anuncio_curso_estudiante = get_config('filter_filtercodes', 'anuncio_curso_estudiante');
+                $replace['/\{anuncio\}/i'] = str_replace('[firstname]', $USER->firstname, $anuncio_curso_estudiante);
+            }
+        }
+        //@tictologo - End with custom filters from Campus virtual
 
         // Tag: {firstaccessdate} or {firstaccessdate dateTimeFormat}.
         if (stripos($text, '{firstaccessdate') !== false) {

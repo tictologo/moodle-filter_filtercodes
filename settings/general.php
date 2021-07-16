@@ -93,3 +93,78 @@ $choices = ['' => get_string('none'),
         'profile' => get_string('profile')];
 $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
 $settings->add($setting);
+
+
+// @tictologo start
+// Custom content info_ucla_1.
+$default = '';
+$name = 'filter_filtercodes/info_ucla_1';
+$title = get_string('info_ucla_1', 'filter_filtercodes');
+$description = get_string('info_ucla_description', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// Custom content info_ucla_2.
+$default = '';
+$name = 'filter_filtercodes/info_ucla_2';
+$title = get_string('info_ucla_2', 'filter_filtercodes');
+$description = get_string('info_ucla_description', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// Custom content info_ucla_3.
+$default = '';
+$name = 'filter_filtercodes/info_ucla_3';
+$title = get_string('info_ucla_3', 'filter_filtercodes');
+$description = get_string('info_ucla_description', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// Toolbox Docente
+$default = '';
+$name = 'filter_filtercodes/toolbox_docente';
+$title = get_string('toolbox_docente', 'filter_filtercodes');
+$description = get_string('info_ucla_description2', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// Toolbox Estudiante
+$default = '';
+$name = 'filter_filtercodes/toolbox_estudiante';
+$title = get_string('toolbox_estudiante', 'filter_filtercodes');
+$description = get_string('info_ucla_description2', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// Ayuda Docente
+$default = '';
+$name = 'filter_filtercodes/ayuda_docente';
+$title = get_string('ayuda_docente', 'filter_filtercodes');
+$description = get_string('info_ucla_description2', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// Ayuda Estudiante
+$default = '';
+$name = 'filter_filtercodes/ayuda_estudiante';
+$title = get_string('ayuda_estudiante', 'filter_filtercodes');
+$description = get_string('info_ucla_description2', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// anuncio curso Docente
+$default = '';
+$name = 'filter_filtercodes/anuncio_curso_docente';
+$title = get_string('anuncio_curso_docente', 'filter_filtercodes');
+$description = get_string('info_ucla_description2', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// anuncio curso Estudiante
+$default = '';
+$name = 'filter_filtercodes/anuncio_curso_estudiante';
+$title = get_string('anuncio_curso_estudiante', 'filter_filtercodes');
+$description = get_string('info_ucla_description2', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+        // @tictologo ending

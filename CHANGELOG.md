@@ -1,6 +1,72 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] 2021-05-22
+### Added
+- New {courseteachers} tag (ALPHA).
+- New %7Bcoursemoduleid%7D tag.
+- New define custom global {global_...} tags (up to 20).
+- New {courserequest} tag.
+- New {courserequestmenu} tag.
+- New {courserequestmenu0} tag.
+- New {coursecards catid} tag. You can now optionally specify courses in a specific category id to display.
+- New setting to hide completed courses in {mycoursesmenu} list.
+- New {menudev} tag.
+- New {ifprofile_field_...}{/ifprofile_field_...} tags.
+- New {supportname} tag.
+- New {supportemail} tag.
+- New {supportpage} tag.
+- New {webpage} gets automatically substituted to {profile_field_webpage} as of Moodle 3.11.
+### Updated
+- {coursesummary} can now include other FilterCodes.
+- {categorycards} titles now always display white.
+- Request a Course link is no longer included in {mycourses}. See new {courserequest} tag.
+- Request a Course link is no longer included in {mycoursesmenu}. See new {courserequestmenu0} and {courserequestmenu} tags.
+- {profile_field_...} of type Date/Time now displays date/time instead of a number.
+- {profile_field_...} of type Checkbox now displays Yes/No instead of a 1 or 0.
+- {profile_field_...} of other types will now display value if field contains 0.
+- {profile_field_...} tags will now be removed if user is not logged in.
+- {filtercodes} tag now works on all pages but only for users who have course:update capability.
+- Custom menu tags should not be processed through the "URL to Link" (urltolink) filter. See README.md to update your theme.
+- Documentation in this README.md file.
+- Copyright notice for 2021.
+
+## [2.1.0] 2020-11-23
+### Added
+- New {ifingroup id|idnumber}{/ifingroup} tags.
+- New {filtercodes} tag. Note: Only works for teachers and above.
+- New {alert style}{/alert} tags (ALPHA).
+- New {ifincohort idname|idnumber}{/ifincohort} tags.
+- New {webpage} tag.
+- New {ifnoteditmode} tag.
+- New {iftenant idnumber|tenantid}{/iftenant} (ALPHA) tags. (Workplace only - in Moodle classic, tenant is assumed to be 1).
+- New {ifworkplace}{/ifworkplace} (ALPHA) tags. (Workplace only - in Moodle classic, will not display tags or content).
+- New {timezone} tag.
+- New {preferredlanguage} tag.
+- New {coursesummary} tag.
+- New {firstaccessdate} tag.
+- New {formsesskey} tag.
+- New Moodle date/time format option for the {firstaccessdate} tag.
+- New Moodle date/time format option for the {coursestartdate} tag.
+- New Moodle date/time format option for the {courseenddate} tag.
+- New Moodle date/time format option for the {coursecompletiondate} tag.
+- New {ifminsitemanager} tag.
+- New {now} tag.
+- New option to format the date/time {now dateTimeFormat}.
+
+### Updated
+- {courseprogress} and {courseprogressbar} now show zero progress if progress is 0.
+- {alert} to allow for optional contextual class stying.
+- Reorganized and grouped list of tags and made some corrections in the documentation.
+- FAQ: Information on how to patch Moodle to enable FilterCodes in the custom menu.
+- FAQ: Search the README.md file for the word Troubleshooting to now find helpful information.
+- Fixed {diskfreespace} and {diskfreespacedata} on very large/unlimited storage. Note: Greater than about 84,703.29 Yottabyte (YB) is now considered infinite.
+- {profile_field_shortname} now supports textarea type custom fields.
+- Re-enabled the %7Buserid%7D tag.
+- Fixed {courseshortname} so that it displays the site shortname if you are not in a course.
+- Should now be passing 100% of the PHPUnit Tests.
+- Tested to be compatible up to and including Moodle 3.10.
+
 ## [2.0.0] 2020-07-01
 ### Added
 - New configurable setting to enable/disable escaped [{braces}] (e.g. for creating documentation). Default is enabled.
@@ -12,7 +78,7 @@ All notable changes to this project will be documented in this file.
 - New {ifcustomrole roleshortname}{/{ifcustomrole} tags.
 - New {ifnotcustomrole roleshortname}{/{ifnotcustomrole} tags.
 - New {userdescription} tag.
-- New {categorycards} tag (ALPHA}.
+- New {categorycards} tag (ALPHA).
 - New {coursecards} tag (ALPHA).
 - New {courseprogress} tag (ALPHA).
 - New {courseprogressbar} tag (ALPHA).

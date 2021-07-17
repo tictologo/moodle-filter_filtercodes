@@ -731,9 +731,15 @@ class filter_filtercodes extends moodle_text_filter {
         if (stripos($text, '{toolbox}') !== false) {
             if ($this->hasminarchetype('teacher')) {
                 $toolbox_docente = get_config('filter_filtercodes', 'toolbox_docente');
+                if(stripos($toolbox_docente, '[proxybooklick]') !== false){
+                    $toolbox_docente = str_replace('[proxybooklick]',  $content = $this-> getBooklick('[proxybooklick]'), $toolbox_docente);
+                }
                 $replace['/\{toolbox\}/i'] = str_replace('[firstname]', $USER->firstname, $toolbox_docente);
             } else {
                 $toolbox_estudiante = get_config('filter_filtercodes', 'toolbox_estudiante');
+                if(stripos($toolbox_estudiante, '[proxybooklick]') !== false){
+                    $toolbox_estudiante = str_replace('[proxybooklick]',  $content = $this-> getBooklick('[proxybooklick]'), $toolbox_estudiante);
+                }
                 $replace['/\{toolbox\}/i'] = str_replace('[firstname]', $USER->firstname, $toolbox_estudiante);
             }
         }
@@ -742,21 +748,49 @@ class filter_filtercodes extends moodle_text_filter {
         if (stripos($text, '{ayuda}') !== false) {
             if ($this->hasminarchetype('teacher')) {
                 $ayuda_docente = get_config('filter_filtercodes', 'ayuda_docente');
-                $replace['/\{ayuda\}/i'] = str_replace('[firstname]', $USER->firstname, $ayuda_docente);
+                $ayuda_docente = str_replace('[firstname]', $USER->firstname, $ayuda_docente);
+                $ayuda_docente = str_replace('[idcurso]', $PAGE->course->id, $ayuda_docente);
+                $replace['/\{ayuda\}/i'] = $ayuda_docente;
             } else {
                 $ayuda_estudiante = get_config('filter_filtercodes', 'ayuda_estudiante');
-                $replace['/\{ayuda\}/i'] = str_replace('[firstname]', $USER->firstname, $ayuda_estudiante);
+                $ayuda_estudiante = str_replace('[firstname]', $USER->firstname, $ayuda_estudiante);
+                $ayuda_estudiante = str_replace('[idcurso]', $PAGE->course->id, $ayuda_estudiante);
+                $replace['/\{ayuda\}/i'] = $ayuda_estudiante;
             }
         }
 
-        // campus_tag: {anuncio}.
-        if (stripos($text, '{anuncio}') !== false) {
+        // TODO: Optimizar este código creando algunos métodos
+        // campus_tag: {info_presencial}.
+        if (stripos($text, '{info_presencial}') !== false) {
             if ($this->hasminarchetype('teacher')) {
-                $anuncio_curso_docente = get_config('filter_filtercodes', 'anuncio_curso_docente');
-                $replace['/\{anuncio\}/i'] = str_replace('[firstname]', $USER->firstname, $anuncio_curso_docente);
+                $info_presencial = get_config('filter_filtercodes', 'info_docente_presencial');
+                $info_presencial = str_replace('[firstname]', $USER->firstname, $info_presencial);
+                $info_presencial = str_replace('[shortname]', $PAGE->course->shortname, $info_presencial);
+                $info_presencial= str_replace('[mail]', $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey(), $info_presencial);
+                $replace['/\{info_presencial\}/i'] =  $info_presencial;
             } else {
-                $anuncio_curso_estudiante = get_config('filter_filtercodes', 'anuncio_curso_estudiante');
-                $replace['/\{anuncio\}/i'] = str_replace('[firstname]', $USER->firstname, $anuncio_curso_estudiante);
+                $info_presencial = get_config('filter_filtercodes', 'info_estudiante_presencial');
+                $info_presencial = str_replace('[firstname]', $USER->firstname, $info_presencial);
+                $info_presencial = str_replace('[shortname]', $PAGE->course->shortname, $info_presencial);
+                $info_presencial= str_replace('[mail]', $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey(), $info_presencial);
+                $replace['/\{info_presencial\}/i'] =  $info_presencial;
+            }
+        }
+
+        // campus_tag: {info_distancia}.
+        if (stripos($text, '{info_distancia}') !== false) {
+            if ($this->hasminarchetype('teacher')) {
+                $info_distancia= get_config('filter_filtercodes', 'info_docente_distancia');
+                $info_distancia= str_replace('[firstname]', $USER->firstname, $info_distancia);
+                $info_distancia= str_replace('[idcurso]', $PAGE->course->id, $info_distancia);
+                $info_distancia= str_replace('[mail]', $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey(), $info_distancia);
+                $replace['/\{info_distancia\}/i'] = $info_distancia;
+            } else {
+                $info_distancia = get_config('filter_filtercodes', 'info_estudiante_distancia');
+                $info_distancia= str_replace('[firstname]', $USER->firstname, $info_distancia);
+                $info_distancia= str_replace('[idcurso]', $PAGE->course->id, $info_distancia);
+                $info_distancia= str_replace('[mail]', $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey(), $info_distancia);
+                $replace['/\{info_distancia\}/i'] = $info_distancia;
             }
         }
         //@tictologo - End with custom filters from Campus virtual

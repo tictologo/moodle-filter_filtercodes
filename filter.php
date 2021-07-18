@@ -350,7 +350,68 @@ class filter_filtercodes extends moodle_text_filter {
             }
             else {
                 return str_replace('[proxybooklick]',$urlbooklick, $text);
-            } 
+            }
+    }
+
+    /**
+     * @param string $text shortname of course custom field .
+     * get value of course custom field
+     * @return string with value of course custom field
+     */
+    private function getValueCustomField($text)
+    {
+        global $PAGE;
+        $handler = \core_course\customfield\course_handler::create();
+        $datas = $handler->get_instance_data($PAGE->course->id);
+        $metadata = [];
+        foreach ($datas as $data) {
+            if (empty($data->get_value())) {
+                continue;
+            }
+            $metadata[$data->get_field()->get('shortname')] = $data->get_value();
+        }
+        return $metadata[$text];
+    }
+
+    /** New method by @tictologo 20210701600
+     * @param $text with content for replace.
+     * @return string with subtitutions
+     */
+    private function srtReplace($text)
+    {
+
+        global $PAGE, $USER, $CFG;
+
+        if (isloggedin() && !isguestuser()) {
+
+            if(strpos($text, '[firstname]') !== false) {
+                $text = str_replace('[firstname]',$USER->firstname,$text);
+            }
+            if(strpos($text, '[iduser]') !== false) {
+                $text = str_replace('[iduser]',$USER->id,$text);
+            }
+            if(strpos($text, '[proxybooklick]') !== false) {
+                $text = str_replace('[proxybooklick]', $this-> getBooklick('[proxybooklick]'),$text);
+            }
+            if(strpos($text, '[userkey]') !== false) {
+                $text = str_replace('[userkey]', $this-> getBooklick('userkey'),$text);
+            }
+            if(strpos($text, '[mail]') !== false) {
+                $mail = $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey();
+                $text = str_replace('[mail]', $mail,$text);
+            }
+        }
+
+        if(strpos($text, '[idcurso]') !== false) {
+            $text = str_replace('[idcurso]', $PAGE->course->id,$text);
+        }
+
+        if(strpos($text, '[shortname]') !== false) {
+            $text = str_replace('[shortname]', $PAGE->course->shortname,$text);
+        }
+
+        return $text;
+
     }
     // @tictologo ending
 
@@ -685,29 +746,20 @@ class filter_filtercodes extends moodle_text_filter {
         //@tictologo start with custom filters from Campus virtual
         // campus_tag: {info_ucla_1}.
         if (stripos($text, '{info_ucla_1}') !== false) {
-            $content = get_config('filter_filtercodes', 'info_ucla_1');
-                if(stripos($content, '[proxybooklick]') !== false){
-                    $content = $this-> getBooklick($content) ;
-                }
-            $replace['/\{info_ucla_1\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
+            $info_ucla_1 = get_config('filter_filtercodes', 'info_ucla_1');
+            $replace['/\{info_ucla_1\}/i'] = $this -> srtReplace($info_ucla_1);
         }
 
         // campus_tag: {info_ucla_2}.
         if (stripos($text, '{info_ucla_2}') !== false) {
-            $content = get_config('filter_filtercodes', 'info_ucla_2');
-                if(stripos($content, '[proxybooklick]') !== false){
-                    $content = $this-> getBooklick($content) ;
-                }
-            $replace['/\{info_ucla_2\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
+            $info_ucla_2= get_config('filter_filtercodes', 'info_ucla_2');
+            $replace['/\{info_ucla_2\}/i'] = $this -> srtReplace($info_ucla_2);
         }
 
         // campus_tag: {info_ucla_3}.
         if (stripos($text, '{info_ucla_3}') !== false) {
-            $content = get_config('filter_filtercodes', 'info_ucla_3');
-                if(stripos($content, '[proxybooklick]') !== false){
-                    $content = $this-> getBooklick($content) ;
-                }
-            $replace['/\{info_ucla_3\}/i'] = str_replace('[firstname]', $USER->firstname, $content);
+            $info_ucla_3 = get_config('filter_filtercodes', 'info_ucla_3');
+            $replace['/\{info_ucla_3\}/i'] = $this -> srtReplace($info_ucla_3);
         }
 
         // campus_tag: {biblioteca}.
@@ -717,80 +769,92 @@ class filter_filtercodes extends moodle_text_filter {
 
         // custom_tag: {userkey}.
         if (stripos($text, '{userkey}') !== false) {
-            $replace['/\{userkey\}/i'] = $this-> getBooklick('userkey');
-         }
-
-         // custom_tag: {refer}.
-         if (stripos($text, '{refer}') !== false) {
-            if(isset($_GET['refer'])) {
-              $replace['/\{refer\}/i'] = $_GET['refer'];
-            } 
+            $replace['/\{userkey\}/i'] = $this->getBooklick('userkey');
         }
 
-        // campus_tag: {toolbox}.
+         // custom_tag: {refer}.
+        if (stripos($text, '{refer}') !== false) {
+            if(isset($_GET['refer'])) {
+                $replace['/\{refer\}/i'] = $_GET['refer'];
+            }
+        }
+
+        // campus_tag: {toolbox} -> HTML Block on Adaptable Tabs
         if (stripos($text, '{toolbox}') !== false) {
             if ($this->hasminarchetype('teacher')) {
                 $toolbox_docente = get_config('filter_filtercodes', 'toolbox_docente');
-                if(stripos($toolbox_docente, '[proxybooklick]') !== false){
-                    $toolbox_docente = str_replace('[proxybooklick]',  $content = $this-> getBooklick('[proxybooklick]'), $toolbox_docente);
-                }
-                $replace['/\{toolbox\}/i'] = str_replace('[firstname]', $USER->firstname, $toolbox_docente);
+                $replace['/\{toolbox\}/i'] = $this->srtReplace($toolbox_docente);
             } else {
                 $toolbox_estudiante = get_config('filter_filtercodes', 'toolbox_estudiante');
-                if(stripos($toolbox_estudiante, '[proxybooklick]') !== false){
-                    $toolbox_estudiante = str_replace('[proxybooklick]',  $content = $this-> getBooklick('[proxybooklick]'), $toolbox_estudiante);
-                }
-                $replace['/\{toolbox\}/i'] = str_replace('[firstname]', $USER->firstname, $toolbox_estudiante);
+                $replace['/\{toolbox\}/i'] = $this->srtReplace($toolbox_estudiante);
             }
         }
 
-        // campus_tag: {ayuda}.
+        // campus_tag: {ayuda} -> HTML Block on Adaptable Tabs
         if (stripos($text, '{ayuda}') !== false) {
             if ($this->hasminarchetype('teacher')) {
                 $ayuda_docente = get_config('filter_filtercodes', 'ayuda_docente');
-                $ayuda_docente = str_replace('[firstname]', $USER->firstname, $ayuda_docente);
-                $ayuda_docente = str_replace('[idcurso]', $PAGE->course->id, $ayuda_docente);
-                $replace['/\{ayuda\}/i'] = $ayuda_docente;
+                $replace['/\{ayuda\}/i'] = $this->srtReplace($ayuda_docente);
             } else {
                 $ayuda_estudiante = get_config('filter_filtercodes', 'ayuda_estudiante');
-                $ayuda_estudiante = str_replace('[firstname]', $USER->firstname, $ayuda_estudiante);
-                $ayuda_estudiante = str_replace('[idcurso]', $PAGE->course->id, $ayuda_estudiante);
-                $replace['/\{ayuda\}/i'] = $ayuda_estudiante;
+                $replace['/\{ayuda\}/i'] = $this->srtReplace($ayuda_estudiante);
             }
         }
 
-        // TODO: Optimizar este código creando algunos métodos
-        // campus_tag: {info_presencial}.
-        if (stripos($text, '{info_presencial}') !== false) {
+        // campus_tag: {menu_aula} -> Buttons on sidebar of Moodle course
+        if (stripos($text, '{menu_aula}') !== false) {
             if ($this->hasminarchetype('teacher')) {
-                $info_presencial = get_config('filter_filtercodes', 'info_docente_presencial');
-                $info_presencial = str_replace('[firstname]', $USER->firstname, $info_presencial);
-                $info_presencial = str_replace('[shortname]', $PAGE->course->shortname, $info_presencial);
-                $info_presencial= str_replace('[mail]', $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey(), $info_presencial);
-                $replace['/\{info_presencial\}/i'] =  $info_presencial;
+                $menu_docente = get_config('filter_filtercodes', 'menu_aula_docente');
+                $replace['/\{menu_aula\}/i'] = $this->srtReplace($menu_docente);
             } else {
-                $info_presencial = get_config('filter_filtercodes', 'info_estudiante_presencial');
-                $info_presencial = str_replace('[firstname]', $USER->firstname, $info_presencial);
-                $info_presencial = str_replace('[shortname]', $PAGE->course->shortname, $info_presencial);
-                $info_presencial= str_replace('[mail]', $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey(), $info_presencial);
-                $replace['/\{info_presencial\}/i'] =  $info_presencial;
+                $menu_estudiante = get_config('filter_filtercodes', 'menu_aula_estudiante');
+                $replace['/\{menu_aula\}/i'] = $this->srtReplace($menu_estudiante);
             }
         }
 
-        // campus_tag: {info_distancia}.
-        if (stripos($text, '{info_distancia}') !== false) {
-            if ($this->hasminarchetype('teacher')) {
-                $info_distancia= get_config('filter_filtercodes', 'info_docente_distancia');
-                $info_distancia= str_replace('[firstname]', $USER->firstname, $info_distancia);
-                $info_distancia= str_replace('[idcurso]', $PAGE->course->id, $info_distancia);
-                $info_distancia= str_replace('[mail]', $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey(), $info_distancia);
-                $replace['/\{info_distancia\}/i'] = $info_distancia;
-            } else {
-                $info_distancia = get_config('filter_filtercodes', 'info_estudiante_distancia');
-                $info_distancia= str_replace('[firstname]', $USER->firstname, $info_distancia);
-                $info_distancia= str_replace('[idcurso]', $PAGE->course->id, $info_distancia);
-                $info_distancia= str_replace('[mail]', $CFG->wwwroot . '/local/mail/create.php?c=' . $PAGE->course->id . '&sesskey='. sesskey(), $info_distancia);
-                $replace['/\{info_distancia\}/i'] = $info_distancia;
+        // campus_tag: {guia_curso} -> Display the quick start guide on one page
+        if (stripos($text, '{guia_curso}') !== false) {
+            // if modality is (1) DISTANCIA or (2) VIRTUAL
+            if($this->getValueCustomField('modality') < 3) {
+                if ($this->hasminarchetype('teacher')) {
+                    $guia_docente_distancia = get_config('filter_filtercodes', 'guia_docente_distancia');
+                    $replace['/\{guia_curso\}/i'] = $this->srtReplace($guia_docente_distancia);
+                } else {
+                    $guia_estudiante_distancia = get_config('filter_filtercodes', 'guia_estudiante_distancia');
+                    $replace['/\{guia_curso\}/i'] = $this->srtReplace($guia_estudiante_distancia);
+                }
+            }
+            else {
+                if ($this->hasminarchetype('teacher')) {
+                    $guia_docente_presencial = get_config('filter_filtercodes', 'guia_docente_presencial');
+                    $replace['/\{guia_curso\}/i'] = $this->srtReplace($guia_docente_presencial);
+                } else {
+                    $guia_estudiante_presencial = get_config('filter_filtercodes', 'guia_estudiante_presencial');
+                    $replace['/\{guia_curso\}/i'] = $this->srtReplace($guia_estudiante_presencial);
+                }
+            }
+        }
+
+        // campus_tag: {info_curso} -> Welcome message in section 0 of the course
+        if (stripos($text, '{info_curso}') !== false) {
+            // if modality is (1) DISTANCIA or (2) VIRTUAL
+            if($this->getValueCustomField('modality') < 3) {
+                if ($this->hasminarchetype('teacher')) {
+                    $info_docente_distancia = get_config('filter_filtercodes', 'info_docente_distancia');
+                    $replace['/\{info_curso\}/i'] = $this->srtReplace($info_docente_distancia);
+                } else {
+                    $info_estudiante_distancia = get_config('filter_filtercodes', 'info_estudiante_distancia');
+                    $replace['/\{info_curso\}/i'] = $this->srtReplace($info_estudiante_distancia);
+                }
+            }
+            else {
+                if ($this->hasminarchetype('teacher')) {
+                    $info_docente_presencial = get_config('filter_filtercodes', 'info_docente_presencial');
+                    $replace['/\{info_curso\}/i'] = $this->srtReplace($info_docente_presencial);
+                } else {
+                    $info_estudiante_presencial = get_config('filter_filtercodes', 'info_estudiante_presencial');
+                    $replace['/\{info_curso\}/i'] = $this->srtReplace($info_estudiante_presencial);
+                }
             }
         }
         //@tictologo - End with custom filters from Campus virtual

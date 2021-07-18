@@ -100,7 +100,7 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/info_ucla_1';
 $title = get_string('info_ucla_1', 'filter_filtercodes');
-$description = get_string('info_ucla_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -108,7 +108,7 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/info_ucla_2';
 $title = get_string('info_ucla_2', 'filter_filtercodes');
-$description = get_string('info_ucla_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -116,7 +116,7 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/info_ucla_3';
 $title = get_string('info_ucla_3', 'filter_filtercodes');
-$description = get_string('info_ucla_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -124,7 +124,7 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/toolbox_docente';
 $title = get_string('toolbox_docente', 'filter_filtercodes');
-$description = get_string('toolbox_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -132,7 +132,7 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/toolbox_estudiante';
 $title = get_string('toolbox_estudiante', 'filter_filtercodes');
-$description = get_string('toolbox_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -140,7 +140,7 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/ayuda_docente';
 $title = get_string('ayuda_docente', 'filter_filtercodes');
-$description = get_string('ayuda_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -148,7 +148,7 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/ayuda_estudiante';
 $title = get_string('ayuda_estudiante', 'filter_filtercodes');
-$description = get_string('ayuda_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -156,15 +156,7 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/info_docente_presencial';
 $title = get_string('info_docente_presencial', 'filter_filtercodes');
-$description = get_string('info_presencial_desc', 'filter_filtercodes');
-$setting = new admin_setting_configtextarea($name, $title, $description, $default);
-$settings->add($setting);
-
-// info curso presencial Estudiante
-$default = '';
-$name = 'filter_filtercodes/info_estudiante_presencial';
-$title = get_string('info_estudiante_presencial', 'filter_filtercodes');
-$description = get_string('info_presencial_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -172,7 +164,15 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/info_docente_distancia';
 $title = get_string('info_docente_distancia', 'filter_filtercodes');
-$description = get_string('info_distancia_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// info curso presencial Estudiante
+$default = '';
+$name = 'filter_filtercodes/info_estudiante_presencial';
+$title = get_string('info_estudiante_presencial', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
 
@@ -180,7 +180,55 @@ $settings->add($setting);
 $default = '';
 $name = 'filter_filtercodes/info_estudiante_distancia';
 $title = get_string('info_estudiante_distancia', 'filter_filtercodes');
-$description = get_string('info_distancia_desc', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
 $settings->add($setting);
-        // @tictologo ending
+
+// GUIA DOCENTE PRESENCIAL
+$default = '';
+$name = 'filter_filtercodes/guia_docente_presencial';
+$title = get_string('guia_docente_presencial', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// GUIA DOCENTE DISTANCIA
+$default = '';
+$name = 'filter_filtercodes/guia_docente_distancia';
+$title = get_string('guia_docente_distancia', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// GUIA ESTUDIANTE PRESENCIAL
+$default = '';
+$name = 'filter_filtercodes/guia_estudiante_presencial';
+$title = get_string('guia_estudiante_presencial', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// GUIA ESTUDIANTE DISTANCIA
+$default = '';
+$name = 'filter_filtercodes/guia_estudiante_distancia';
+$title = get_string('guia_estudiante_distancia', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// MENU AULA DOCENTE
+$default = '';
+$name = 'filter_filtercodes/menu_aula_docente';
+$title = get_string('menu_aula_docente', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+
+// MENU AULA ESTUDIANTE
+$default = '';
+$name = 'filter_filtercodes/menu_aula_estudiante';
+$title = get_string('menu_aula_estudiante', 'filter_filtercodes');
+$description = get_string('filter_ucla_desc', 'filter_filtercodes');
+$setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$settings->add($setting);
+// @tictologo ending
